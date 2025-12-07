@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Your Photos & Videos - Riss Photography</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000000;
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .animated-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: radial-gradient(ellipse at top, #1a0a2e 0%, #000000 50%);
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .orb1 {
+            width: 600px;
+            height: 600px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+
+        .orb2 {
+            width: 500px;
+            height: 500px;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            bottom: -150px;
+            right: -150px;
+            animation-delay: 5s;
+        }
+
+        .orb3 {
+            width: 400px;
+            height: 400px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: 10s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(100px, -100px) scale(1.1); }
+            50% { transform: translate(-50px, 100px) scale(0.9); }
+            75% { transform: translate(-100px, -50px) scale(1.05); }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: particleFloat 15s linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 100px;
+            position: relative;
+        }
+
+        .logo-container {
+            display: inline-block;
+            position: relative;
+            margin-bottom: 40px;
+            perspective: 1000px;
+        }
+
+        .logo-ring {
+            width: 140px;
+            height: 140px;
+            border: 3px solid;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation: ringPulse 4s ease-in-out infinite;
+        }
+
+        .logo-ring:nth-child(1) {
+            border-color: rgba(102, 126, 234, 0.4);
+            animation-delay: 0s;
+            width: 120px;
+            height: 120px;
+        }
+
+        .logo-ring:nth-child(2) {
+            border-color: rgba(219, 39, 119, 0.3);
+            animation-delay: 0.7s;
+            width: 160px;
+            height: 160px;
+        }
+
+        .logo-ring:nth-child(3) {
+            border-color: rgba(79, 172, 254, 0.2);
+            animation-delay: 1.4s;
+            width: 200px;
+            height: 200px;
+        }
+
+        @keyframes ringPulse {
+            0%, 100% { 
+                opacity: 1; 
+                transform: translate(-50%, -50%) scale(1) rotateZ(0deg);
+            }
+            50% { 
+                opacity: 0.3; 
+                transform: translate(-50%, -50%) scale(1.15) rotateZ(180deg);
+            }
+        }
+
+        .camera-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            box-shadow: 
+                0 0 60px rgba(102, 126, 234, 0.8),
+                0 0 100px rgba(219, 39, 119, 0.4),
+                inset 0 0 20px rgba(255, 255, 255, 0.2);
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .camera-icon::before {
+            content: '';
+            width: 35px;
+            height: 30px;
+            border: 3px solid white;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .camera-icon::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 22px;
+            left: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        h1 {
+            font-size: 5em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            letter-spacing: -3px;
+            animation: fadeInUp 0.8s ease, gradientShift 8s ease infinite;
+            text-shadow: 0 0 80px rgba(102, 126, 234, 0.5);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            font-size: 1.6em;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+            animation: fadeInUp 0.8s ease 0.2s both;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .intro-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(30px) saturate(180%);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 60px;
+            margin-bottom: 80px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease 0.4s both;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        .intro-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent,
+                #667eea,
+                #764ba2,
+                #f093fb,
+                transparent
+            );
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { transform: translateX(-100%); }
+            50% { transform: translateX(100%); }
+        }
+
+        .intro-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.1) 0%, transparent 70%);
+            animation: rotate 15s linear infinite;
+        }
+
+        .intro-card p {
+            font-size: 1.3em;
+            line-height: 1.9;
+            color: rgba(255, 255, 255, 0.9);
+            position: relative;
+            z-index: 1;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+            gap: 35px;
+            margin-bottom: 80px;
+        }
+
+        .step-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(30px) saturate(180%);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 45px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeInUp 0.8s ease both;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .step-card:nth-child(1) { animation-delay: 0.5s; }
+        .step-card:nth-child(2) { animation-delay: 0.6s; }
+        .step-card:nth-child(3) { animation-delay: 0.7s; }
+        .step-card:nth-child(4) { animation-delay: 0.8s; }
+        .step-card:nth-child(5) { animation-delay: 0.9s; }
+        .step-card:nth-child(6) { animation-delay: 1s; }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #f093fb);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.5s ease;
+        }
+
+        .step-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.15) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .step-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .step-card:hover::after {
+            opacity: 1;
+        }
+
+        .step-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: rgba(102, 126, 234, 0.4);
+            box-shadow: 
+                0 30px 80px rgba(102, 126, 234, 0.4),
+                0 0 100px rgba(219, 39, 119, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+
+        .step-number {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            font-size: 5em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0.08;
+            line-height: 1;
+        }
+
+        .step-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(219, 39, 119, 0.3) 100%);
+            border: 2px solid rgba(102, 126, 234, 0.4);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            transition: all 0.4s ease;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .step-card:hover .step-icon {
+            transform: scale(1.15) rotate(10deg);
+            box-shadow: 
+                0 15px 40px rgba(102, 126, 234, 0.5),
+                0 0 40px rgba(219, 39, 119, 0.3);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.5) 0%, rgba(219, 39, 119, 0.5) 100%);
+        }
+
+        .icon-svg {
+            width: 32px;
+            height: 32px;
+            stroke: #667eea;
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            filter: drop-shadow(0 0 10px rgba(102, 126, 234, 0.5));
+            transition: all 0.3s ease;
+        }
+
+        .step-card:hover .icon-svg {
+            stroke: #f093fb;
+            filter: drop-shadow(0 0 20px rgba(240, 147, 251, 0.8));
+        }
+
+        .step-title {
+            font-size: 1.8em;
+            font-weight: 800;
+            margin-bottom: 18px;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+
+        .step-description {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .step-description ul {
+            margin-top: 18px;
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .step-description li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+        }
+
+        .step-description li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 8px;
+            background: linear-gradient(135deg, #667eea, #f093fb);
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(102, 126, 234, 0.6);
+        }
+
+        .tips-section {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(30px) saturate(180%);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 60px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease 1.1s both;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .tips-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4facfe, #00f2fe, #43e97b);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        .tips-title {
+            font-size: 2.5em;
+            font-weight: 800;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .tips-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: tipsBounce 2s infinite;
+            box-shadow: 
+                0 10px 30px rgba(79, 172, 254, 0.5),
+                0 0 50px rgba(0, 242, 254, 0.3);
+        }
+
+        @keyframes tipsBounce {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(5deg); }
+            50% { transform: translateY(0) rotate(0deg); }
+            75% { transform: translateY(-8px) rotate(-5deg); }
+        }
+
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .tip-item {
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tip-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(79, 172, 254, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .tip-item:hover::before {
+            left: 100%;
+        }
+
+        .tip-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(79, 172, 254, 0.4);
+            transform: translateX(10px);
+            box-shadow: 0 10px 40px rgba(79, 172, 254, 0.3);
+        }
+
+        .tip-item strong {
+            color: #4facfe;
+            font-weight: 700;
+            font-size: 1.15em;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .tip-item p {
+            color: rgba(255, 255, 255, 0.75);
+            line-height: 1.7;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 100px;
+            padding: 50px 0;
+            border-top: 2px solid rgba(255, 255, 255, 0.1);
+            animation: fadeIn 0.8s ease 1.2s both;
+            position: relative;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #667eea, #f093fb, transparent);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        .footer-logo {
+            font-size: 1.8em;
+            font-weight: 800;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .footer-text {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.05em;
+            font-weight: 300;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 3em; }
+            .subtitle { font-size: 1.2em; }
+            .steps-grid { grid-template-columns: 1fr; }
+            .intro-card, .step-card, .tips-section { padding: 35px; }
+            .tips-grid { grid-template-columns: 1fr; }
+            .orb { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-background">
+        <div class="orb orb1"></div>
+        <div class="orb orb2"></div>
+        <div class="orb orb3"></div>
+    </div>
+    
+    <div class="particles" id="particles"></div>
+    
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <div class="logo-ring"></div>
+                <div class="logo-ring"></div>
+                <div class="logo-ring"></div>
+                <div class="camera-icon"></div>
+            </div>
+            <h1>Riss Photography</h1>
+            <p class="subtitle">Download Your Photos & Videos</p>
+        </header>
+
+        <div class="intro-card">
+            <p>Welcome! Your photos and videos have been shared via Google Drive. Follow these steps to download your memories to your device.</p>
+        </div>
+
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">01</div>
+                <div class="step-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                        <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                </div>
+                <h3 class="step-title">Open the Link</h3>
+                <p class="step-description">Check your email or message for the Google Drive link. Click to open in your browser. No Google account required.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">02</div>
+                <div class="step-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </div>
+                <h3 class="step-title">View Your Files</h3>
+                <p class="step-description">Browse through your photos and videos. Preview them to see all your captured moments.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">03</div>
+                <div class="step-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                        <polyline points="9 11 12 14 22 4"></polyline>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                    </svg>
+                </div>
+                <h3 class="step-title">Select Files</h3>
+                <p class="step-description">Choose what to download:
+                    <ul>
+                        <li>Single file: Click directly on it</li>
+                        <li>All files: Select the folder name</li>
+                        <li>Multiple files: Check boxes next to items</li>
+                    </ul>
+                </p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">04</div>
+                <div class="step-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                </div>
+                <h3 class="step-title">Download</h3>
+                <p class="step-description">Click the download button (top right) or use the three-dot menu. For multiple files, right-click and select download.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">05</div>
+                <div class="step-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+                <h3 class="step-title">Processing</h3>
+                <p class="step-description">Download starts automatically. Multiple files compress to ZIP. Large videos may take a few minutes based on connection speed.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">06</div>
+                <div class="step-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24">
+                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                </div>
+                <h3 class="step-title">Access Files</h3>
+                <p class="step-description">Find files in your Downloads folder. ZIP files need extraction: right-click "Extract All" (Windows) or double-click (Mac).</p>
+            </div>
+        </div>
+
+        <div class="tips-section">
+            <h2 class="tips-title">
+                <div class="tips-icon">
+                    <svg class="icon-svg" viewBox="0 0 24 24" style="stroke: white;">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                        <path d="M2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                    </svg>
+                </div>
+                Pro Tips
+            </h2>
+            <div class="tips-grid">
+                <div class="tip-item">
+                    <strong>Mobile Users</strong>
+                    <p>Use the Google Drive app for easier access. Tap three dots, select download.</p>
+                </div>
+                <div class="tip-item">
+                    <strong>Storage Space</strong>
+                    <p>Ensure sufficient device space before downloading, especially for videos.</p>
+                </div>
+                <div class="tip-item">
+                    <strong>Connection</strong>
+                    <p>Use WiFi for large downloads to preserve mobile data.</p>
+                </div>
+                <div class="tip-item">
+                    <strong>Need Help?</strong>
+                    <p>Having trouble? Reach out directly for assistance.</p>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="footer-logo">Riss Photography</div>
+            <p class="footer-text">Capturing your precious moments</p>
+        </footer>
+    </div>
+
+    <script>
+        // Create floating particles
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 50;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 15 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+    </script>
+</body>
+</html>
